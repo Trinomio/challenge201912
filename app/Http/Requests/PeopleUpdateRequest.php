@@ -34,7 +34,7 @@ class PeopleUpdateRequest extends FormRequest
             'last_name' => ['required','string'],
             'email' => ['required','email',Rule::unique('peoples')->ignore($peopleId)],
             'courses' => ['array'],
-            'courses.*' => ['exists:courses,id']
+            'courses.*.id' => ['exists:courses,id']
         ];
     }
 }

@@ -32,7 +32,7 @@ class PeopleStoreRequest extends FormRequest
             'last_name' => ['required','string'],
             'email' => ['required','email','unique:peoples,email'],
             'courses' => ['array'],
-            'courses.*' => ['exists:courses,id']
+            'courses.*.id' => ['exists:courses,id']
         ];
     }
 }

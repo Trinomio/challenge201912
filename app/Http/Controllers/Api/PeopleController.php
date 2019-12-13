@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\PeopleStoreRequest;
 use App\Http\Requests\PeopleUpdateRequest;
 use App\People;
+use App\Course;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PeopleRequest;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 /**
  *
@@ -76,12 +78,23 @@ class PeopleController extends Controller {
     public function index(Request $request)
     {
         $itemsPerPage = $request->input('per_page');
-
-        $peoples = People::where('first_name','LIKE','%'.$request->input('first_name').'%')
-                            ->where('last_name','LIKE','%'.$request->input('last_name').'%')
-                            ->where('email','LIKE','%'.$request->input('email').'%')
-                            ->paginate($itemsPerPage);
-        return response()->json($peoples);
+        $courseId = $request->input('course_id');
+        $levelId = $request->input('level_id');
+        $languageCode = $request->input('language_code');
+        if($levelId || $languageCode || $courseId){
+            $courses = Course::where('level_id','like','%'.$levelId.'%')
+                             ->where('language_code','like','%'.$languageCode.'%');
+            if($courseId){
+                $courses = $courses->where('id',$courseId);
+            }
+            $coursesIds = array_map(function($course){return $course['id'];},$courses->get()->toArray());  
+            $peoples = People::whereHas('courses', function (Builder $query) use($coursesIds){
+                                    $query->whereIn('courses.id', $coursesIds);
+                                });
+        } else {
+            $peoples = People::query();
+        }  
+        return response()->json($peoples->paginate($itemsPerPage));
     }
 
     /**
@@ -113,7 +126,8 @@ class PeopleController extends Controller {
     {
         $people = People::create($request->validated());
         
-        $people->courses()->sync($request->input('courses'));
+        $coursesIds = $this->getCoursesIds($request->input('courses'));
+        $people->courses()->sync($coursesIds);
 
         return response() -> json(People::find($people->id));
     }
@@ -183,7 +197,8 @@ class PeopleController extends Controller {
     {
         $people->fill($request->validated());
         $people->save();
-        $people->courses()->sync($request->input('courses'));
+        $coursesIds = $this->getCoursesIds($request->input('courses'));
+        $people->courses()->sync($coursesIds);
 
         return response()->json(People::find($people->id));
     }
@@ -218,6 +233,10 @@ class PeopleController extends Controller {
     {
         $deleted = $people->delete();
         return response()->json([ 'deleted' => $deleted ]);
+    }
+
+    private function getCoursesIds($courses){
+        return array_map(function($course){return $course['id'];},$courses);
     }
 
 }
