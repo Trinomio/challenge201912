@@ -140,12 +140,13 @@ class PeopleController extends Controller {
      * )
      *
      * @param PeopleStoreRequest $request
+     * @return JsonResponse
      */
     public function store(PeopleStoreRequest $request)
     {
         $people = People::create($request->validated());
         
-        $coursesIds = $this->getCoursesIds($request->input('courses'));
+        $coursesIds = $this->_getCoursesIds($request->input('courses'));
         $people->courses()->sync($coursesIds);
 
         return response() -> json(People::find($people->id));
@@ -177,7 +178,7 @@ class PeopleController extends Controller {
      *     )
      * )
      *
-     * @param PeopleRequest $request
+     * @param People $people
      * @return JsonResponse
      */
     public function show(People $people)
@@ -223,7 +224,7 @@ class PeopleController extends Controller {
     {
         $people->fill($request->validated());
         $people->save();
-        $coursesIds = $this->getCoursesIds($request->input('courses'));
+        $coursesIds = $this->_getCoursesIds($request->input('courses'));
         $people->courses()->sync($coursesIds);
 
         return response()->json(People::find($people->id));
@@ -252,6 +253,7 @@ class PeopleController extends Controller {
      * )
      *
      * @param PeopleRequest $request
+     * @param People $people
      * @return JsonResponse
      * @throws \Exception
      */
@@ -261,8 +263,12 @@ class PeopleController extends Controller {
         return response()->json([ 'deleted' => $deleted ]);
     }
 
-    private function getCoursesIds($courses){
-        return array_map(function($course){return $course['id'];},$courses);
+    /**
+     * @param $courses
+     * @return array
+     */
+    private function _getCoursesIds($courses) {
+        return array_map(function($course) { return $course['id']; }, $courses);
     }
 
 }
