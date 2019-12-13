@@ -15,7 +15,7 @@ class LevelController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/level",
+     *     path="/api/levels",
      *     operationId="findLevels",
      *     summary="Mostrar niveles",
      *     @OA\Response(

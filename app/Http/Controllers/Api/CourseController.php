@@ -16,7 +16,7 @@ class CourseController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/course",
+     *     path="/api/courses",
      *     operationId="findCourses",
      *     summary="Mostrar cursos",
      *     @OA\Parameter(

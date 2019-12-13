@@ -15,7 +15,7 @@ class LanguageController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/language",
+     *     path="/api/languages",
      *     operationId="findLanguages",
      *     summary="Mostrar idiomas",
      *     @OA\Response(

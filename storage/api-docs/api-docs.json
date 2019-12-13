@@ -9,12 +9,12 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000",
+            "url": "",
             "description": "API server"
         }
     ],
     "paths": {
-        "/api/course": {
+        "/api/courses": {
             "get": {
                 "summary": "Mostrar cursos",
                 "operationId": "findCourses",
@@ -54,7 +54,7 @@
                 }
             }
         },
-        "/api/language": {
+        "/api/languages": {
             "get": {
                 "summary": "Mostrar idiomas",
                 "operationId": "findLanguages",
@@ -78,7 +78,7 @@
                 }
             }
         },
-        "/api/level": {
+        "/api/levels": {
             "get": {
                 "summary": "Mostrar niveles",
                 "operationId": "findLevels",
@@ -102,7 +102,7 @@
                 }
             }
         },
-        "/api/people": {
+        "/api/peoples": {
             "get": {
                 "summary": "Mostrar personas",
                 "operationId": "findPeoples",
@@ -125,6 +125,20 @@
                         "name": "level_id",
                         "in": "query",
                         "description": "Level ID",
+                        "required": false,
+                        "style": "form"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "style": "form"
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Rows per page",
                         "required": false,
                         "style": "form"
                     }
@@ -165,7 +179,10 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Persona creada."
+                        "description": "Persona creada.",
+                        "content": {
+                            "application/json": {}
+                        }
                     },
                     "404": {
                         "description": "No se encontro la persona."
@@ -173,17 +190,16 @@
                 }
             }
         },
-        "/api/people/{people_id}": {
+        "/api/peoples/{people}": {
             "get": {
                 "summary": "Busca una persona",
                 "operationId": "findPeople",
                 "parameters": [
                     {
-                        "name": "people_id",
-                        "in": "query",
+                        "name": "people",
+                        "in": "path",
                         "description": "People ID",
-                        "required": false,
-                        "style": "form"
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -210,16 +226,31 @@
                 "operationId": "updatePeople",
                 "parameters": [
                     {
-                        "name": "people_id",
-                        "in": "query",
+                        "name": "people",
+                        "in": "path",
                         "description": "People ID",
                         "required": false,
                         "style": "form"
                     }
                 ],
+                "requestBody": {
+                    "request": "People",
+                    "description": "People object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/People"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Persona actualizada."
+                        "description": "Persona actualizada.",
+                        "content": {
+                            "application/json": {}
+                        }
                     },
                     "404": {
                         "description": "No se encontro la persona."
@@ -231,16 +262,18 @@
                 "operationId": "deletePeople",
                 "parameters": [
                     {
-                        "name": "people_id",
-                        "in": "query",
+                        "name": "people",
+                        "in": "path",
                         "description": "People ID",
-                        "required": false,
-                        "style": "form"
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Elimina una persona."
+                        "description": "Elimina una persona.",
+                        "content": {
+                            "application/json": {}
+                        }
                     },
                     "404": {
                         "description": "No se encontro la persona."

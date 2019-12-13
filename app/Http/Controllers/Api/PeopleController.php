@@ -23,7 +23,7 @@ use Illuminate\Http\JsonResponse;
  *     ),
  *     @OA\Server(
  *         description="API server",
- *         url="http://localhost:8000"
+ *         url=""
  *     )
  * )
  *
@@ -58,6 +58,21 @@ class PeopleController extends Controller {
      *         required=false,
      *         style="form"
      *     ),
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Page number",
+     *         required=false,
+     *         style="form"
+     *     ),
+
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Rows per page",
+     *         required=false,
+     *         style="form"
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Mostrar todas las personas.",
@@ -83,9 +98,10 @@ class PeopleController extends Controller {
         $languageCode = $request->input('language_code');
         if($levelId || $languageCode || $courseId){
             $courses = Course::where('language_code','like','%'.$languageCode.'%');
-            if( $levelId){
+            if($levelId) {
                 $courses = $courses->where('level_id',$levelId);
             }
+
             if($courseId){
                 $courses = $courses->where('id',$courseId);
             }
@@ -141,11 +157,10 @@ class PeopleController extends Controller {
      *     operationId="findPeople",
      *     summary="Busca una persona",
      *     @OA\Parameter(
-     *         name="people_id",
-     *         in="query",
+     *         name="people",
+     *         in="path",
      *         description="People ID",
-     *         required=false,
-     *         style="form"
+     *         required=true
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -165,7 +180,7 @@ class PeopleController extends Controller {
      * @param PeopleRequest $request
      * @return JsonResponse
      */
-    public function show(PeopleUpdateRequest $request, People $people)
+    public function show(People $people)
     {
 
         return response()->json($people);
@@ -180,8 +195,7 @@ class PeopleController extends Controller {
      *         name="people",
      *         in="path",
      *         description="People ID",
-     *         required=false,
-     *         style="form"
+     *         required=true
      *     ),
      *     @OA\RequestBody(
      *         request="People",

@@ -20,7 +20,7 @@ class CreatePeoplesTable extends Migration
             $table->bigIncrements('id');
             $table->string('first_name', 50);
             $table->string('last_name', 50);
-            $table->string('email', 254)->unique();
+            $table->string('email', 191)->unique();
             $table->timestamps();
         });
     }

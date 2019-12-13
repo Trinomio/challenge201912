@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 Route::apiResource('peoples','Api\PeopleController');
-Route::get('language','Api\LanguageController@index');
-Route::get('level','Api\LevelController@index');
-Route::get('course','Api\CourseController@index');
+Route::get('languages','Api\LanguageController@index');
+Route::get('levels','Api\LevelController@index');
+Route::get('courses','Api\CourseController@index');
