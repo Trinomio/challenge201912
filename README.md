@@ -21,9 +21,13 @@ Backend desarrollado en Laravel para el challenge de proceso de selección de pe
 ## Intalacion y configuracion del entorno
 
 - Clonar el proyecto
-- Acceder a la carpeta root del proyecto y correr el comando composer install
+- Acceder a la carpeta root del proyecto y correr el comando `composer install`
 - Crear una instancia de base de datos en MySQL
 - Configurar el archivo .env a partir del .env.example modificando los parametros de conexion a la base
 - Correr el comando `php artisan migrate:install` para que se instale el repositorio de migrations en la instancia de la base
 - Correr el comando `php artisan migrate:refresh --seed` para que se ejecuten los migrations y los seeds
+- Correr el comando `php artisan serve` para correr la aplicacion
 
+## Documentacion
+
+- Una vez ejecutado el comando artisan serve se puede acceder a la documentacion del proyecto desde la siguiente url http://localhost:8000/api/documentation
