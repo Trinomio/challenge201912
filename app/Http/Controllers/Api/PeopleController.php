@@ -82,8 +82,10 @@ class PeopleController extends Controller {
         $levelId = $request->input('level_id');
         $languageCode = $request->input('language_code');
         if($levelId || $languageCode || $courseId){
-            $courses = Course::where('level_id','like','%'.$levelId.'%')
-                             ->where('language_code','like','%'.$languageCode.'%');
+            $courses = Course::where('language_code','like','%'.$languageCode.'%');
+            if( $levelId){
+                $courses = $courses->where('level_id',$levelId);
+            }
             if($courseId){
                 $courses = $courses->where('id',$courseId);
             }

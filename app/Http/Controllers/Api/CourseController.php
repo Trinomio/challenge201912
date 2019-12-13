@@ -54,7 +54,11 @@ class CourseController extends Controller
     {
         $levelId = $request->input('level_id');
         $languageCode = $request->input('language_code');
-        $courses = Course::where('level_id','like','%'.$levelId.'%')->where('language_code','like','%'.$languageCode.'%')->get();
+        $courses = Course::where('language_code','like','%'.$languageCode.'%');
+        if($levelId){
+            $courses = $courses->where('level_id',$levelId);
+        }
+        $courses = $courses->get();
         return response()->json($courses);
     }
 
