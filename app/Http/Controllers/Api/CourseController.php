@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Course;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 /**
  * Class CourseController
@@ -49,9 +50,12 @@ class CourseController extends Controller
      *
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Course::with(['level', 'language'])->get());
+        $levelId = $request->input('level_id');
+        $languageCode = $request->input('language_code');
+        $courses = Course::where('level_id','like','%'.$levelId.'%')->where('language_code','like','%'.$languageCode.'%')->get();
+        return response()->json($courses);
     }
 
 }
