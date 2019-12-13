@@ -53,7 +53,9 @@ class People extends Model
     /**
      * @var string
      */
+    protected $fillable = ['first_name','last_name','email'];
     protected $table = 'peoples';
+    protected $with = ['courses'];
 
     /**
      * @return BelongsToMany

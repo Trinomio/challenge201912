@@ -7,6 +7,7 @@ use App\Http\Requests\PeopleUpdateRequest;
 use App\People;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PeopleRequest;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 /**
  *
@@ -31,7 +32,7 @@ class PeopleController extends Controller {
 
     /**
      * @OA\Get(
-     *     path="/api/people",
+     *     path="/api/peoples",
      *     operationId="findPeoples",
      *     summary="Mostrar personas",
      *     @OA\Parameter(
@@ -72,14 +73,20 @@ class PeopleController extends Controller {
      *
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(People::with(['courses', 'courses.level', 'courses.language'])->get());
+        $itemsPerPage = $request->input('per_page');
+
+        $peoples = People::where('first_name','LIKE','%'.$request->input('first_name').'%')
+                            ->where('last_name','LIKE','%'.$request->input('last_name').'%')
+                            ->where('email','LIKE','%'.$request->input('email').'%')
+                            ->paginate($itemsPerPage);
+        return response()->json($peoples);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/people",
+     *     path="/api/peoples",
      *     operationId="postPeople",
      *     summary="Crea una persona con sus correspondientes cursos",
      *     @OA\RequestBody(
@@ -104,12 +111,16 @@ class PeopleController extends Controller {
      */
     public function store(PeopleStoreRequest $request)
     {
+        $people = People::create($request->validated());
+        
+        $people->courses()->sync($request->input('courses'));
 
+        return response() -> json(People::find($people->id));
     }
 
     /**
      * @OA\Get(
-     *     path="/api/people/{people_id}",
+     *     path="/api/peoples/{people_id}",
      *     operationId="findPeople",
      *     summary="Busca una persona",
      *     @OA\Parameter(
@@ -137,14 +148,15 @@ class PeopleController extends Controller {
      * @param PeopleRequest $request
      * @return JsonResponse
      */
-    public function show(PeopleRequest $request)
+    public function show(PeopleUpdateRequest $request, People $people)
     {
-        return response()->json(People::with(['courses', 'courses.level', 'courses.language'])->find($request->people_id));
+
+        return response()->json($people);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/people/{people_id}",
+     *     path="/api/peoples/{people_id}",
      *     operationId="updatePeople",
      *     summary="actualiza una persona y su correspondientes cursos",
      *     @OA\Parameter(
@@ -167,15 +179,18 @@ class PeopleController extends Controller {
      * @param PeopleUpdateRequest $request
      * @return JsonResponse
      */
-    public function update(PeopleUpdateRequest $request)
+    public function update(PeopleUpdateRequest $request, People $people)
     {
-        return response()->json();
+        $people->fill($request->validated());
+        $people->save();
+        $people->courses()->sync($request->input('courses'));
 
+        return response()->json(People::find($people->id));
     }
 
     /**
      * @OA\Delete(
-     *     path="/api/people/{people_id}",
+     *     path="/api/peoples/{people_id}",
      *     operationId="deletePeople",
      *     summary="Elimina una persona",
      *     @OA\Parameter(
@@ -199,9 +214,9 @@ class PeopleController extends Controller {
      * @return JsonResponse
      * @throws \Exception
      */
-    public function destroy(PeopleRequest $request)
+    public function destroy(PeopleRequest $request, People $people)
     {
-        $deleted = People::with(['courses'])->whereKey($request->people_id)->delete();
+        $deleted = $people->delete();
         return response()->json([ 'deleted' => $deleted ]);
     }
 

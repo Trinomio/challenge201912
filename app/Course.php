@@ -52,6 +52,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Course extends Model
 {
 
+    protected $with = ['level','language'];
+
     /**
      * @return BelongsTo
      */
