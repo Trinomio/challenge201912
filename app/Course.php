@@ -52,12 +52,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Course extends Model
 {
 
-    protected $with = ['level','language'];
+    protected $with = ['levels','language'];
 
     /**
      * @return BelongsTo
      */
-    public function level()
+    public function levels()
     {
         return $this->belongsTo(Level::class);
     }
