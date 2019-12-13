@@ -113,6 +113,7 @@ class PeopleController extends Controller {
      *     @OA\Response(
      *         response=200,
      *         description="Persona creada.",
+     *         @OA\MediaType(mediaType="application/json")
      *     ),
      *     @OA\Response(
      *         response="404",
@@ -134,7 +135,7 @@ class PeopleController extends Controller {
 
     /**
      * @OA\Get(
-     *     path="/api/peoples/{people_id}",
+     *     path="/api/peoples/{people}",
      *     operationId="findPeople",
      *     summary="Busca una persona",
      *     @OA\Parameter(
@@ -170,19 +171,28 @@ class PeopleController extends Controller {
 
     /**
      * @OA\Put(
-     *     path="/api/peoples/{people_id}",
+     *     path="/api/peoples/{people}",
      *     operationId="updatePeople",
      *     summary="actualiza una persona y su correspondientes cursos",
      *     @OA\Parameter(
-     *         name="people_id",
-     *         in="query",
+     *         name="people",
+     *         in="path",
      *         description="People ID",
      *         required=false,
      *         style="form"
      *     ),
+     *     @OA\RequestBody(
+     *         request="People",
+     *         description="People object",
+     *         required=true,
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/People"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Persona actualizada.",
+     *         @OA\MediaType(mediaType="application/json")
      *     ),
      *     @OA\Response(
      *         response="404",
@@ -205,19 +215,19 @@ class PeopleController extends Controller {
 
     /**
      * @OA\Delete(
-     *     path="/api/peoples/{people_id}",
+     *     path="/api/peoples/{people}",
      *     operationId="deletePeople",
      *     summary="Elimina una persona",
      *     @OA\Parameter(
-     *         name="people_id",
-     *         in="query",
+     *         name="people",
+     *         in="path",
      *         description="People ID",
-     *         required=false,
-     *         style="form"
+     *         required=true
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Elimina una persona.",
+     *         @OA\MediaType(mediaType="application/json")
      *     ),
      *     @OA\Response(
      *         response="404",
