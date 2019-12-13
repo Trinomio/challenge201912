@@ -1,0 +1,349 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Personas",
+        "contact": {
+            "email": "mauricio.morales@trinom.io"
+        },
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "API server"
+        }
+    ],
+    "paths": {
+        "/api/course": {
+            "get": {
+                "summary": "Mostrar cursos",
+                "operationId": "findCourses",
+                "parameters": [
+                    {
+                        "name": "language_code",
+                        "in": "query",
+                        "description": "Language Code",
+                        "required": false,
+                        "style": "form"
+                    },
+                    {
+                        "name": "level_id",
+                        "in": "query",
+                        "description": "Level ID",
+                        "required": false,
+                        "style": "form"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mostrar todos los cursos.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Course"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
+        "/api/language": {
+            "get": {
+                "summary": "Mostrar idiomas",
+                "operationId": "findLanguages",
+                "responses": {
+                    "200": {
+                        "description": "Mostrar todos los idiomas.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Language"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
+        "/api/level": {
+            "get": {
+                "summary": "Mostrar niveles",
+                "operationId": "findLevels",
+                "responses": {
+                    "200": {
+                        "description": "Mostrar todos los niveles.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Level"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
+        "/api/people": {
+            "get": {
+                "summary": "Mostrar personas",
+                "operationId": "findPeoples",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "query",
+                        "description": "Course ID",
+                        "required": false,
+                        "style": "form"
+                    },
+                    {
+                        "name": "language_code",
+                        "in": "query",
+                        "description": "Language Code",
+                        "required": false,
+                        "style": "form"
+                    },
+                    {
+                        "name": "level_id",
+                        "in": "query",
+                        "description": "Level ID",
+                        "required": false,
+                        "style": "form"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mostrar todas las personas.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/People"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            },
+            "post": {
+                "summary": "Crea una persona con sus correspondientes cursos",
+                "operationId": "postPeople",
+                "requestBody": {
+                    "request": "People",
+                    "description": "People object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/People"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Persona creada."
+                    },
+                    "404": {
+                        "description": "No se encontro la persona."
+                    }
+                }
+            }
+        },
+        "/api/people/{people_id}": {
+            "get": {
+                "summary": "Busca una persona",
+                "operationId": "findPeople",
+                "parameters": [
+                    {
+                        "name": "people_id",
+                        "in": "query",
+                        "description": "People ID",
+                        "required": false,
+                        "style": "form"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mostrar una persona.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "item",
+                                    "items": {
+                                        "$ref": "#/components/schemas/People"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No se encontro la persona."
+                    }
+                }
+            },
+            "put": {
+                "summary": "actualiza una persona y su correspondientes cursos",
+                "operationId": "updatePeople",
+                "parameters": [
+                    {
+                        "name": "people_id",
+                        "in": "query",
+                        "description": "People ID",
+                        "required": false,
+                        "style": "form"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Persona actualizada."
+                    },
+                    "404": {
+                        "description": "No se encontro la persona."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Elimina una persona",
+                "operationId": "deletePeople",
+                "parameters": [
+                    {
+                        "name": "people_id",
+                        "in": "query",
+                        "description": "People ID",
+                        "required": false,
+                        "style": "form"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Elimina una persona."
+                    },
+                    "404": {
+                        "description": "No se encontro la persona."
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Course": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 30
+                    },
+                    "language_code": {
+                        "type": "string",
+                        "maxLength": 2
+                    },
+                    "level_id": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "level": {
+                        "$ref": "#/components/schemas/Level"
+                    },
+                    "language": {
+                        "$ref": "#/components/schemas/Language"
+                    }
+                },
+                "type": "object"
+            },
+            "Language": {
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "maxLength": 2
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 30
+                    }
+                },
+                "type": "object"
+            },
+            "Level": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 30
+                    }
+                },
+                "type": "object"
+            },
+            "People": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 30
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 30
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "courses": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Course"
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
