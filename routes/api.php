@@ -12,7 +12,11 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResource('peoples','Api\PeopleController');
-Route::get('languages','Api\LanguageController@index');
-Route::get('levels','Api\LevelController@index');
-Route::get('courses','Api\CourseController@index');
+Route::group([
+    'middleware' => 'api',
+], function ($router) {
+    Route::apiResource('peoples','Api\PeopleController');
+    Route::get('languages','Api\LanguageController@index');
+    Route::get('levels','Api\LevelController@index');
+    Route::get('courses','Api\CourseController@index');
+});
