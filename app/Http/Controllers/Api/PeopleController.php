@@ -268,6 +268,9 @@ class PeopleController extends Controller {
      * @return array
      */
     private function _getCoursesIds($courses) {
+        if (!is_array($courses)) {
+            return [];
+        }
         return array_map(function($course) { return $course['id']; }, $courses);
     }
 
