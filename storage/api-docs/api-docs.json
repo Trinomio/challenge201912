@@ -102,7 +102,7 @@
                 }
             }
         },
-        "/api/peoples": {
+        "/api/people": {
             "get": {
                 "summary": "Mostrar personas",
                 "operationId": "findPeoples",
@@ -190,15 +190,15 @@
                 }
             }
         },
-        "/api/peoples/{people}": {
+        "/api/people/{person}": {
             "get": {
                 "summary": "Busca una persona",
                 "operationId": "findPeople",
                 "parameters": [
                     {
-                        "name": "people",
+                        "name": "person",
                         "in": "path",
-                        "description": "People ID",
+                        "description": "Person ID",
                         "required": true
                     }
                 ],
@@ -226,16 +226,16 @@
                 "operationId": "updatePeople",
                 "parameters": [
                     {
-                        "name": "people",
+                        "name": "person",
                         "in": "path",
-                        "description": "People ID",
+                        "description": "Person ID",
                         "required": false,
                         "style": "form"
                     }
                 ],
                 "requestBody": {
-                    "request": "People",
-                    "description": "People object",
+                    "request": "Person",
+                    "description": "Person object",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -262,9 +262,9 @@
                 "operationId": "deletePeople",
                 "parameters": [
                     {
-                        "name": "people",
+                        "name": "person",
                         "in": "path",
-                        "description": "People ID",
+                        "description": "Person ID",
                         "required": true
                     }
                 ],

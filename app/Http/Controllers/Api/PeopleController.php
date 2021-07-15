@@ -34,7 +34,7 @@ class PeopleController extends Controller {
 
     /**
      * @OA\Get(
-     *     path="/api/peoples",
+     *     path="/api/people",
      *     operationId="findPeoples",
      *     summary="Mostrar personas",
      *     @OA\Parameter(
@@ -117,7 +117,7 @@ class PeopleController extends Controller {
 
     /**
      * @OA\Post(
-     *     path="/api/peoples",
+     *     path="/api/people",
      *     operationId="postPeople",
      *     summary="Crea una persona con sus correspondientes cursos",
      *     @OA\RequestBody(
@@ -154,7 +154,7 @@ class PeopleController extends Controller {
 
     /**
      * @OA\Get(
-     *     path="/api/peoples/{people}",
+     *     path="/api/people/{people}",
      *     operationId="findPeople",
      *     summary="Busca una persona",
      *     @OA\Parameter(
@@ -181,15 +181,14 @@ class PeopleController extends Controller {
      * @param People $people
      * @return JsonResponse
      */
-    public function show(People $people)
+    public function show(People $person)
     {
-
-        return response()->json($people);
+        return response()->json($person);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/peoples/{people}",
+     *     path="/api/people/{people}",
      *     operationId="updatePeople",
      *     summary="actualiza una persona y su correspondientes cursos",
      *     @OA\Parameter(
@@ -220,19 +219,19 @@ class PeopleController extends Controller {
      * @param PeopleUpdateRequest $request
      * @return JsonResponse
      */
-    public function update(PeopleUpdateRequest $request, People $people)
+    public function update(PeopleUpdateRequest $request, People $person)
     {
-        $people->fill($request->validated());
-        $people->save();
+        $person->fill($request->validated());
+        $person->save();
         $coursesIds = $this->_getCoursesIds($request->input('courses'));
-        $people->courses()->sync($coursesIds);
+        $person->courses()->sync($coursesIds);
 
-        return response()->json(People::find($people->id));
+        return response()->json(People::find($person->id));
     }
 
     /**
      * @OA\Delete(
-     *     path="/api/peoples/{people}",
+     *     path="/api/people/{people}",
      *     operationId="deletePeople",
      *     summary="Elimina una persona",
      *     @OA\Parameter(
@@ -257,9 +256,9 @@ class PeopleController extends Controller {
      * @return JsonResponse
      * @throws \Exception
      */
-    public function destroy(PeopleRequest $request, People $people)
+    public function destroy(PeopleRequest $request, People $person)
     {
-        $deleted = $people->delete();
+        $deleted = $person->delete();
         return response()->json([ 'deleted' => $deleted ]);
     }
 

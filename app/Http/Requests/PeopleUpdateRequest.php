@@ -28,7 +28,7 @@ class PeopleUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $peopleId = $this->route('people');
+        $peopleId = $this->route('person')->id;
         return [
             'first_name' => ['required','string'],
             'last_name' => ['required','string'],
